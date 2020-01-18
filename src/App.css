@@ -1,38 +1,212 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Courier';
+  font-size: 16px;
+  outline: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.whiteBox {
+  border: 30px solid black;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: 	white;
+  overflow: hidden;
+  position: relative;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.line {
+  position: absolute;
+  width: 100vw;
+  height: 31vh;
+  background-color: black;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.one {
+  animation: left 600ms cubic-bezier(0.95, 0.05, 0.795, 0.035) forwards;
+}
+
+.two {
+  margin-top: 31vh;
+  animation: right 300ms linear forwards;
+  animation-delay: 300ms;
+}
+
+.three {
+  margin-top: 62vh;
+  background-color: black;
+  animation: left 300ms linear forwards;
+  animation-delay: 600ms;
+}
+
+@keyframes left{
+  0%   {left: 0vw}
+  100% {left: 100vw; display:none;}
+}
+
+@keyframes right{
+  0%   {right: 0vw}
+  100% {right: 100vw; display:none;}
+}
+
+.leftContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
+  width: 50%;
 }
 
-.App-link {
-  color: #61dafb;
+.leftContainer h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 13vw;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.addButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transform: translateY(4px);
 }
+
+.addIcon {
+  width: 24px;
+  transition: 250ms;
+  
+}
+
+.addTodo {
+  display: flex;
+  text-align-last: justify;
+}
+
+.addTodoInput {
+  display: block;
+  appearance: none;
+  outline: 0;
+  border: none;
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.75);
+  width: 200px;
+  padding: 4px;
+  display: block;
+  margin-right: 10px;
+  color: black;
+  
+  transition-duration: 0.25s;
+}
+  
+  .addTodoInput:focus{
+    width: 260px;
+  }
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  box-sizing: border-box;
+  padding: 32px 40px 38px 56px;
+}
+
+ul {
+  width: 100%;
+}
+
+li {
+  word-break: break-word;
+}
+
+.todoButtons {
+  display: flex;
+}
+
+.todoIcon {
+  width: 16px;
+  transition: 250ms;
+  cursor: pointer;
+}
+
+.todoIcon:hover {
+  width: 24px;
+  transform: translateX(-3px)
+}
+
+.todoButton {
+  background: none;
+  border: none;
+  margin-left: 8px;
+  width: 15px;
+  transition: 250ms;
+}
+
+.todoButton:first-of-type{
+  margin-left: 16px;
+}
+
+.todo {
+  display: flex;
+  margin: 8px 0 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.submitButton {
+  background-color: white;
+  width: 72px;
+  height: 24px;
+  border: none;
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.75);
+  cursor: pointer;
+  transition-duration: 0.25s;
+}
+  
+  .submitButton:hover{
+    width: 88px;
+  }
+
+.submitInput {
+  display: block;
+  appearance: none;
+  outline: 0;
+  border: none;
+  box-shadow: -2px 2px 0px 0px rgba(0,0,0,0.75);
+  width: 200px;
+  height: 24px;
+  box-sizing: border-box;
+  padding: 4px;
+  display: block;
+  font-family: 'Courier';
+  margin-right: 10px;
+  color: black;
+  transition-duration: 0.25s;
+}
+  
+  .submitInput:focus{
+    width: 260px;
+  }
+
+  .toggleButton {
+    background: none;
+    border: none;
+    margin-left: 7px;
+    cursor: pointer;
+  }
+  
+  .toggleAll {
+    display:flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .toggleAll h4 {
+    cursor: pointer;
+  }  
+
+
+
+
+
