@@ -1,154 +1,170 @@
-import React from 'react';
-import './App.css';
-import ChangeButton from './components/ChangeButton';
-import DeleteButton from './components/DeleteButton';
-import CompleteButton from './components/CompleteButton';
-import AddButton from './components/AddButton';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import ChangeButton from "./components/ChangeButton";
+import DeleteButton from "./components/DeleteButton";
+import CompleteButton from "./components/CompleteButton";
+import AddButton from "./components/AddButton";
 
+function TodoForm({ addTodo }) {
+  const [value, setValue] = useState("");
 
-class App extends React.Component {
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!value) return;
+    addTodo(value);
+    setValue("");
+  };
 
-  state = {
-    todoItem: '',
-    todos: []
-  }
+  return (
+    <form onSubmit={handleSubmit} className="addTodo">
+      <input
+        type="text"
+        className="addTodoInput"
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+      <AddButton onClick={() => handleSubmit} />
+    </form>
+  );
+}
 
-  handleChange = event => {
-    this.setState({ todoItem: event.target.value })
-  }
+function App() {
+  useEffect(() => {
+    document.title = "Todos";
+  }, []);
 
-  handleSubmit = () => {
-    if(this.state.todoItem.length > 0) {
-      this.setState(prevState => {
-  
-        const lastTodo = prevState.todos[prevState.todos.length - 1];
-        const todos = [
-          ...prevState.todos,
-          {
-            // TODO: implement proper id ordering for todos
-            id: prevState.todos.length === 0 ? 0 : lastTodo.id + 1,
-            text: this.state.todoItem,
-            completed: false,
-            editing: false,
-          }
-        ];
-        return {
-          todos,
-          todoItem: '',
-        }
-      })      
-    }
-  }
+  const [todos, setTodos] = useState([]);
 
-  deleteTodo = (i) => {
-    const newTodos = this.state.todos.filter((todo, idx) => idx !== i);
-    this.setState({ todos: newTodos })
-  }
+  const addTodo = text => {
+    const newTodos = [
+      ...todos,
+      {
+        text,
+        isCompleted: false,
+        editing: false
+      }
+    ];
+    setTodos(newTodos);
+  };
 
-  handleCompleted = (i) => {
-    const newTodos = [...this.state.todos];
-    newTodos[i].completed = !newTodos[i].completed;
-    this.setState({ todos: newTodos })
-  }
+  const handleCompleted = index => {
+    const newTodos = [...todos];
+    newTodos[index].isCompleted = !newTodos[index].isCompleted;
+    setTodos(newTodos);
+  };
 
-  changeTodo = (i) => {
-    const newTodos = [...this.state.todos];
-    newTodos[i].editing = !newTodos[i].editing;
-    this.setState({ todos: newTodos })
-  }
+  const handleDelete = index => {
+    const newTodos = todos.filter((todo, idx) => idx !== index);
+    setTodos(newTodos);
+  };
 
-  handleSubmitChange = (event, i) => {
+  const handleChange = index => {
+    const newTodos = [...todos];
+    newTodos[index].editing = !newTodos[index].editing;
+    setTodos(newTodos);
+  };
 
-    const newTodos = [...this.state.todos];
-    newTodos[i].text = event.target.value;
-    this.setState({ todos: newTodos });
-  }
+  const submitChange = index => {
+    const newTodos = [...todos];
+    newTodos[index].editing = !newTodos[index].editing;
+    setTodos(newTodos);
+  };
 
-  submitChange = (i) => {
-    const newTodos = [...this.state.todos];
-    newTodos[i].editing = !newTodos[i].editing;
+  const handleSubmitChange = (event, index) => {
+    const newTodos = [...todos];
+    newTodos[index].text = event.target.value;
+    setTodos(newTodos);
+  };
 
-    this.setState({ todos: newTodos })
-  }
-
-  toggleAll = () => {
+  const toggleAll = () => {
     let completedTodos = 0;
 
-    this.state.todos.forEach(todo => {
-      if (todo.completed === true) { completedTodos++ }
-      console.log(completedTodos)
-    })
+    todos.forEach(todo => {
+      if (todo.isCompleted === true) {
+        completedTodos++;
+      }
+    });
 
-    const newTodos = [...this.state.todos];
+    const newTodos = [...todos];
 
     newTodos.forEach(todo => {
       if (completedTodos === newTodos.length) {
-        todo.completed = false
+        todo.isCompleted = false;
       } else {
-        todo.completed = true
+        todo.isCompleted = true;
       }
-    })
+    });
+    setTodos(newTodos);
+  };
 
-    this.setState({ todos: newTodos })
+  return (
+    <main className="whiteBox">
+      <div className="line one"></div>
+      <div className="line two"></div>
+      <div className="line three"></div>
 
-  }
-
-  render() {
-    return (
-
-      <div className='whiteBox'>
-        
-        <div className='line one'></div>
-        <div className='line two'></div>
-        <div className='line three'></div>
-
-        <div className='leftContainer'>
-          <h3>Todos</h3>
-          <div className='addTodo'>
-            <input autoFocus placeholder='Type your todo here' type='text' onChange={this.handleChange} value={this.state.todoItem} className='addTodoInput' />
-            <AddButton onClick={this.handleSubmit} />
-          </div>
-        </div>
-
-        <div className='rightContainer'>
-          <ul>
-            {this.state.todos.map((todo, i) => (
-
-              <div key={todo.id} className='todo'>
-
-                {todo.editing
-                  ? <input placeholder='Add Todo' type='text' value={todo.text} className='submitInput' onChange={e => this.handleSubmitChange(e, i)} />
-                  : <li style={{ textDecorationLine: todo.completed ? 'line-through' : '' }}>{todo.text}</li>
-                }
-                <div className='todoButtons'>
-
-                  {!todo.editing && <DeleteButton onClick={() => this.deleteTodo(i)} />}
-
-                  {todo.editing
-                    ? <button onClick={() => this.submitChange(i)} className="submitButton">Submit</button>
-                    : <ChangeButton
-                      onClick={() => this.changeTodo(i)}
-                    />
-                  }
-
-                  {!todo.editing && <CompleteButton onClick={() => this.handleCompleted(i)} />}
-                </div>
-              </div>
-
-            ))}
-
-            <div className='toggleAll' style={this.state.todos.length !== 0 ? {} : { display: 'none' }}>
-              <h4 onClick={() => this.toggleAll()}>Complete All</h4>
-              <CompleteButton onClick={() => this.toggleAll()} />
-
-            </div>
-
-          </ul>
+      <div className="leftContainer">
+        <h3>Todos</h3>
+        <div className="addTodo">
+          <TodoForm addTodo={addTodo} />
         </div>
       </div>
 
-    )
-  }
+      <div className="rightContainer">
+        <ul>
+          {todos.map((todo, index) => (
+            <li key={todo.id} className="todo">
+              {todo.editing ? (
+                <input
+                  placeholder="Add Todo"
+                  type="text"
+                  value={todo.text}
+                  className="submitInput"
+                  onChange={e => handleSubmitChange(e, index)}
+                />
+              ) : (
+                <li
+                  style={{
+                    textDecorationLine: todo.isCompleted ? "line-through" : ""
+                  }}
+                >
+                  {todo.text}
+                </li>
+              )}
+              <div className="todoButtons">
+                {!todo.editing && (
+                  <DeleteButton onClick={() => handleDelete(index)} />
+                )}
+
+                {todo.editing ? (
+                  <button
+                    onClick={() => submitChange(index)}
+                    className="submitButton"
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <ChangeButton onClick={() => handleChange(index)} />
+                )}
+
+                {!todo.editing && (
+                  <CompleteButton onClick={() => handleCompleted(index)} />
+                )}
+              </div>
+            </li>
+          ))}
+
+          <div
+            className="toggleAll"
+            style={todos.length !== 0 ? {} : { display: "none" }}
+          >
+            <h4 onClick={() => toggleAll()}>Complete All</h4>
+            <CompleteButton onClick={() => toggleAll()} />
+          </div>
+        </ul>
+      </div>
+    </main>
+  );
 }
 
 export default App;
