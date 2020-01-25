@@ -103,7 +103,9 @@
 
 .rightContainer {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
   width: 50%;
   box-sizing: border-box;
   padding: 32px 40px 38px 56px;
@@ -111,10 +113,31 @@
 
 ul {
   width: 100%;
+  max-height: 80vh;
+  list-style-position: inside;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 li {
   word-break: break-word;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background:	#888888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #606060;
 }
 
 .todoButtons {
@@ -197,6 +220,7 @@ li {
     display:flex;
     justify-content: flex-end;
     margin-top: 20px;
+    margin-right: 10px;
   }
 
   .toggleAll h4 {

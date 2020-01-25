@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import ChangeButton from "./components/ChangeButton";
 import DeleteButton from "./components/DeleteButton";
@@ -23,16 +23,12 @@ function TodoForm({ addTodo }) {
         value={value}
         onChange={e => setValue(e.target.value)}
       />
-      <AddButton onClick={() => handleSubmit} />
+      <AddButton />
     </form>
   );
 }
 
 function App() {
-  useEffect(() => {
-    document.title = "Todos";
-  }, []);
-
   const [todos, setTodos] = useState([]);
 
   const addTodo = text => {
@@ -113,7 +109,7 @@ function App() {
       <div className="rightContainer">
         <ul>
           {todos.map((todo, index) => (
-            <li key={todo.id} className="todo">
+            <li key={index} className="todo">
               {todo.editing ? (
                 <input
                   placeholder="Add Todo"
@@ -153,15 +149,13 @@ function App() {
               </div>
             </li>
           ))}
-
-          <div
-            className="toggleAll"
-            style={todos.length !== 0 ? {} : { display: "none" }}
-          >
+        </ul>
+        {todos.length !== 0 && (
+          <div className="toggleAll">
             <h4 onClick={() => toggleAll()}>Complete All</h4>
             <CompleteButton onClick={() => toggleAll()} />
           </div>
-        </ul>
+        )}
       </div>
     </main>
   );
