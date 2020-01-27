@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ChangeButton from "./components/ChangeButton";
 import DeleteButton from "./components/DeleteButton";
@@ -29,6 +29,13 @@ function TodoForm({ addTodo }) {
 }
 
 function App() {
+  
+  useEffect(() => {
+    if(window.localStorage.getItem('todos')) {
+      setTodos(JSON.parse(localStorage.getItem('todos')))
+    }
+  }, [])
+
   const [todos, setTodos] = useState([]);
 
   const addTodo = text => {
@@ -93,6 +100,9 @@ function App() {
     setTodos(newTodos);
   };
 
+  useEffect(() => {
+        window.localStorage.setItem("todos", JSON.stringify(todos))
+  })
   return (
     <main className="whiteBox">
       <div className="line one"></div>
