@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AddButton(props) {
   return (
-    <button onClick={props.onClick} className='addButton'>
+    <button className='addButton'>
       <svg className='addIcon' viewBox="0 0 20 20" width='26' height='26'>
         <path fill="black" d="M13.68,9.448h-3.128V6.319c0-0.304-0.248-0.551-0.552-0.551S9.448,6.015,9.448,6.319v3.129H6.319
                   c-0.304,0-0.551,0.247-0.551,0.551s0.247,0.551,0.551,0.551h3.129v3.129c0,0.305,0.248,0.551,0.552,0.551s0.552-0.246,0.552-0.551
